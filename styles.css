@@ -1,0 +1,259 @@
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.7;
+  background: linear-gradient(135deg, #fff0f5, #ffe4ec);
+  color: #2f1b24;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.letter {
+  width: min(860px, 100%);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #f3c7d7;
+  border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(117, 59, 84, 0.18);
+  padding: 36px 30px;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.gate {
+  width: min(520px, 100%);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #f3c7d7;
+  border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(117, 59, 84, 0.18);
+  padding: 28px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.gate h2 {
+  margin: 0 0 10px;
+  color: #912b58;
+  font-size: 1.4rem;
+}
+
+.gate-text {
+  margin: 0 0 16px;
+}
+
+.gate-form {
+  display: grid;
+  gap: 10px;
+}
+
+.gate-form label {
+  font-weight: 700;
+}
+
+.gate-form input {
+  border: 1px solid #dcb2c2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.gate-form button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: #b43d6f;
+  cursor: pointer;
+}
+
+.gate-form button:hover {
+  background: #912b58;
+}
+
+.gate-error {
+  min-height: 20px;
+  margin: 0;
+  color: #b00020;
+}
+
+.hidden {
+  display: none;
+}
+
+h1 {
+  margin: 0 0 18px;
+  color: #912b58;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+}
+
+p {
+  margin: 0 0 16px;
+  white-space: pre-wrap;
+}
+
+.closing {
+  margin-top: 22px;
+}
+
+.flowers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.background-flowers {
+  position: fixed;
+  z-index: 1;
+}
+
+.background-flowers .flower {
+  opacity: 0.35;
+  animation-duration: 18s;
+}
+
+.letter-content {
+  position: relative;
+  z-index: 2;
+}
+
+.flower {
+  position: absolute;
+  font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+  opacity: 0.7;
+  animation: floatBloom linear infinite;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+}
+
+.lily {
+  color: #ffe7a8;
+  text-shadow: 0 0 10px rgba(255, 240, 195, 0.8);
+}
+
+.rose {
+  color: #ef6a9a;
+  text-shadow: 0 0 10px rgba(239, 106, 154, 0.45);
+}
+
+.flower:nth-child(1) {
+  left: 8%;
+  top: 92%;
+  animation-duration: 12s;
+  animation-delay: -2s;
+}
+
+.flower:nth-child(2) {
+  left: 18%;
+  top: 96%;
+  animation-duration: 15s;
+  animation-delay: -6s;
+}
+
+.flower:nth-child(3) {
+  left: 36%;
+  top: 94%;
+  animation-duration: 13s;
+  animation-delay: -3s;
+}
+
+.flower:nth-child(4) {
+  left: 54%;
+  top: 97%;
+  animation-duration: 16s;
+  animation-delay: -7s;
+}
+
+.flower:nth-child(5) {
+  left: 68%;
+  top: 95%;
+  animation-duration: 14s;
+  animation-delay: -5s;
+}
+
+.flower:nth-child(6) {
+  left: 81%;
+  top: 98%;
+  animation-duration: 17s;
+  animation-delay: -4s;
+}
+
+.flower:nth-child(7) {
+  left: 92%;
+  top: 93%;
+  animation-duration: 11s;
+  animation-delay: -8s;
+}
+
+@keyframes floatBloom {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(0.9);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(-18px, -52vh, 0) rotate(140deg) scale(1.05);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate3d(15px, -104vh, 0) rotate(300deg) scale(0.95);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .flower {
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    opacity: 0.85;
+  }
+
+  .flower:nth-child(1) {
+    left: 4%;
+    top: 88%;
+  }
+
+  .flower:nth-child(2) {
+    left: 15%;
+    top: 91%;
+  }
+
+  .flower:nth-child(3) {
+    left: 31%;
+    top: 89%;
+  }
+
+  .flower:nth-child(4) {
+    left: 48%;
+    top: 92%;
+  }
+
+  .flower:nth-child(5) {
+    left: 64%;
+    top: 90%;
+  }
+
+  .flower:nth-child(6) {
+    left: 79%;
+    top: 92%;
+  }
+
+  .flower:nth-child(7) {
+    left: 91%;
+    top: 89%;
+  }
+}

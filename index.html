@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Love</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <div class="flowers background-flowers" aria-hidden="true">
+      <span class="flower lily">✿</span>
+      <span class="flower rose">❀</span>
+      <span class="flower lily">✿</span>
+      <span class="flower rose">❀</span>
+      <span class="flower lily">✿</span>
+      <span class="flower rose">❀</span>
+      <span class="flower lily">✿</span>
+    </div>
+
+    <section class="gate" id="gate">
+      <h2>Private Love Letter</h2>
+      <p class="gate-text">Enter the password to unlock this page.</p>
+      <form id="gate-form" class="gate-form">
+        <label for="password-input">Password</label>
+        <input
+          id="password-input"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        />
+        <button type="submit">Unlock</button>
+        <p id="gate-error" class="gate-error" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <main class="letter hidden" id="letter">
+      <div class="flowers" aria-hidden="true">
+        <span class="flower lily">✿</span>
+        <span class="flower rose">❀</span>
+        <span class="flower lily">✿</span>
+        <span class="flower rose">❀</span>
+        <span class="flower lily">✿</span>
+        <span class="flower rose">❀</span>
+        <span class="flower lily">✿</span>
+      </div>
+      <div class="letter-content">
+        <h1 id="letter-title">Love</h1>
+        <div id="letter-body"></div>
+        <p class="closing hidden" id="letter-closing"></p>
+      </div>
+    </main>
+  </body>
+</html>

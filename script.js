@@ -57,6 +57,13 @@ if (form) {
       return;
     }
 
+    const submitBtn = form.querySelector("button[type=submit]");
+    const originalLabel = submitBtn ? submitBtn.textContent : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="btn-spinner"></span>Unlocking…`;
+    }
+
     try {
       const response = await fetch("/api/unlock", {
         method: "POST",
@@ -68,6 +75,7 @@ if (form) {
       if (!response.ok) {
         if (errorText) errorText.textContent = "Wrong password. Try again.";
         if (passwordInput) passwordInput.value = "";
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
         return;
       }
 
@@ -75,6 +83,7 @@ if (form) {
     } catch (error) {
       if (errorText) errorText.textContent = "Cannot verify now. Try again.";
       if (passwordInput) passwordInput.value = "";
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
       return;
     }
 

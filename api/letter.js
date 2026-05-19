@@ -19,7 +19,26 @@ module.exports = async function handler(req, res) {
   try {
     const collection = await getCollection();
     const doc = await collection.findOne({ key: "love_letter_content" });
-    if (!doc || typeof doc.title !== "string" || !Array.isArray(doc.paragraphs)) {
+    if (!doc || typeof doc.title !== "string") {
+      sendJson(res, 404, { ok: false, message: "Letter not configured." });
+      return;
+    }
+
+    let pages = [];
+    if (Array.isArray(doc.pages) && doc.pages.length > 0) {
+      pages = doc.pages
+        .map((page) =>
+          Array.isArray(page && page.paragraphs)
+            ? page.paragraphs.filter((x) => typeof x === "string")
+            : []
+        )
+        .filter((paragraphs) => paragraphs.length > 0);
+    } else if (Array.isArray(doc.paragraphs)) {
+      const paragraphs = doc.paragraphs.filter((x) => typeof x === "string");
+      if (paragraphs.length > 0) pages = [paragraphs];
+    }
+
+    if (pages.length === 0) {
       sendJson(res, 404, { ok: false, message: "Letter not configured." });
       return;
     }
@@ -28,7 +47,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       letter: {
         title: doc.title,
-        paragraphs: doc.paragraphs.filter((x) => typeof x === "string"),
+        pages,
         closing: typeof doc.closing === "string" ? doc.closing : ""
       }
     });

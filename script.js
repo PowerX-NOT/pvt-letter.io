@@ -1,5 +1,4 @@
 const SESSION_KEY = "love_letter_unlocked";
-const PARAGRAPHS_PER_PAGE = 2;
 
 const gate = document.querySelector("#gate");
 const form = document.querySelector("#gate-form");
@@ -21,14 +20,6 @@ let totalPages = 1;
 function showLetter() {
   if (gate) gate.classList.add("hidden");
   if (letter) letter.classList.remove("hidden");
-}
-
-function chunkParagraphs(paragraphs, perPage) {
-  const pages = [];
-  for (let i = 0; i < paragraphs.length; i += perPage) {
-    pages.push(paragraphs.slice(i, i + perPage));
-  }
-  return pages.length ? pages : [[]];
 }
 
 function renderParagraphs(paragraphs) {
@@ -58,10 +49,9 @@ function updateClosingVisibility() {
 }
 
 function showPage(page) {
-  if (!letterData) return;
+  if (!letterData || !Array.isArray(letterData.pages)) return;
   currentPage = Math.max(1, Math.min(page, totalPages));
-  const pages = chunkParagraphs(letterData.paragraphs, PARAGRAPHS_PER_PAGE);
-  renderParagraphs(pages[currentPage - 1]);
+  renderParagraphs(letterData.pages[currentPage - 1]);
   updateClosingVisibility();
 
   if (pageSelect) pageSelect.value = String(currentPage);
@@ -71,8 +61,7 @@ function showPage(page) {
 
 function setupPagination(data) {
   letterData = data;
-  const pages = chunkParagraphs(data.paragraphs, PARAGRAPHS_PER_PAGE);
-  totalPages = pages.length;
+  totalPages = Array.isArray(data.pages) ? data.pages.length : 1;
   currentPage = 1;
 
   if (pageSelect) {
@@ -93,7 +82,7 @@ function setupPagination(data) {
 }
 
 function renderLetter(data) {
-  if (!data || !Array.isArray(data.paragraphs)) return;
+  if (!data || !Array.isArray(data.pages) || data.pages.length === 0) return;
   if (letterTitle && typeof data.title === "string") letterTitle.textContent = data.title;
   setupPagination(data);
 }

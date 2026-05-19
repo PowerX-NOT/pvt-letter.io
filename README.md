@@ -47,13 +47,19 @@ Insert document 2 (letter content):
 {
   "key": "love_letter_content",
   "title": "My Dearest Love,",
-  "paragraphs": [
-    "Sometimes I pause and feel grateful that life brought us together.",
-    "You bring calm, laughter, and strength into my everyday moments.",
-    "I admire your heart, your courage, and the way you keep moving forward.",
-    "Being with you makes ordinary days feel meaningful and warm.",
-    "Thank you for being part of my life and my journey.",
-    "I promise to support you, respect you, and grow with you always."
+  "pages": [
+    {
+      "paragraphs": [
+        "First page paragraph 1...",
+        "First page paragraph 2..."
+      ]
+    },
+    {
+      "paragraphs": [
+        "Second page paragraph 1...",
+        "Second page paragraph 2..."
+      ]
+    }
   ],
   "closing": "Yours always,\nYour Name"
 }

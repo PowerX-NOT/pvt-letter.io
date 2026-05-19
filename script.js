@@ -89,7 +89,7 @@ function setupPagination(data) {
     for (let i = 1; i <= totalPages; i += 1) {
       const option = document.createElement("option");
       option.value = String(i);
-      option.textContent = `Page ${i}`;
+      option.textContent = `Letter ${i}`;
       pageSelect.appendChild(option);
     }
   }

@@ -115,10 +115,30 @@ body {
   display: none;
 }
 
-h1 {
-  margin: 0 0 18px;
+.letter-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.letter-header h1 {
+  margin: 0;
+  flex: 1;
   color: #912b58;
   font-size: clamp(1.4rem, 2.2vw, 2rem);
+}
+
+.letter-date {
+  flex-shrink: 0;
+  margin: 0;
+  padding-top: 0.2em;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #7a4a5c;
+  text-align: right;
+  white-space: nowrap;
 }
 
 p {

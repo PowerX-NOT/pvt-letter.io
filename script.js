@@ -6,6 +6,7 @@ const passwordInput = document.querySelector("#password-input");
 const errorText = document.querySelector("#gate-error");
 const letter = document.querySelector("#letter");
 const letterTitle = document.querySelector("#letter-title");
+const letterDate = document.querySelector("#letter-date");
 const letterBody = document.querySelector("#letter-body");
 const closingEl = document.querySelector("#letter-closing");
 const paginationEl = document.querySelector("#letter-pagination");
@@ -32,15 +33,10 @@ function renderParagraphs(paragraphs) {
   });
 }
 
-function updateClosingVisibility() {
-  if (!closingEl || !letterData) return;
-  const hasClosing = typeof letterData.closing === "string" && letterData.closing.trim();
-  if (!hasClosing) {
-    closingEl.classList.add("hidden");
-    return;
-  }
-  if (currentPage === totalPages) {
-    const [line1, line2 = ""] = letterData.closing.split("\n");
+function renderClosing(closing) {
+  if (!closingEl) return;
+  if (typeof closing === "string" && closing.trim()) {
+    const [line1, line2 = ""] = closing.split("\n");
     closingEl.innerHTML = `${line1}<br />${line2}`;
     closingEl.classList.remove("hidden");
   } else {
@@ -48,11 +44,35 @@ function updateClosingVisibility() {
   }
 }
 
+function renderTitle(title) {
+  if (!letterTitle) return;
+  if (typeof title === "string" && title.trim()) {
+    letterTitle.textContent = title;
+    letterTitle.classList.remove("hidden");
+  } else {
+    letterTitle.classList.add("hidden");
+  }
+}
+
+function renderDate(date) {
+  if (!letterDate) return;
+  if (typeof date === "string" && date.trim()) {
+    letterDate.textContent = date;
+    letterDate.classList.remove("hidden");
+  } else {
+    letterDate.textContent = "";
+    letterDate.classList.add("hidden");
+  }
+}
+
 function showPage(page) {
   if (!letterData || !Array.isArray(letterData.pages)) return;
   currentPage = Math.max(1, Math.min(page, totalPages));
-  renderParagraphs(letterData.pages[currentPage - 1]);
-  updateClosingVisibility();
+  const pageData = letterData.pages[currentPage - 1];
+  renderTitle(pageData.title);
+  renderDate(pageData.date);
+  renderParagraphs(pageData.paragraphs);
+  renderClosing(pageData.closing);
 
   if (pageSelect) pageSelect.value = String(currentPage);
   if (pagePrev) pagePrev.disabled = currentPage === 1;
@@ -83,7 +103,6 @@ function setupPagination(data) {
 
 function renderLetter(data) {
   if (!data || !Array.isArray(data.pages) || data.pages.length === 0) return;
-  if (letterTitle && typeof data.title === "string") letterTitle.textContent = data.title;
   setupPagination(data);
 }
 

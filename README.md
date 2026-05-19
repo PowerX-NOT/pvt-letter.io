@@ -41,27 +41,55 @@ Use only the hash value (first column) in MongoDB:
 }
 ```
 
-Insert document 2 (letter content):
+Insert document 2 (letter content).
+
+### Single page (recommended)
+
+Use a flat `paragraphs` array. The app shows everything on **one page**: title, date (top right), all paragraphs, then closing. The page dropdown stays hidden.
 
 ```json
 {
   "key": "love_letter_content",
   "title": "My Dearest Love,",
+  "date": "May 20, 2026",
+  "paragraphs": [
+    "Sometimes I pause and feel grateful that life brought us together.",
+    "You bring calm, laughter, and strength into my everyday moments.",
+    "I promise to support you, respect you, and grow with you always."
+  ],
+  "closing": "Yours always,\nYour Name"
+}
+```
+
+### Multiple pages (optional)
+
+Use a `pages` array when you want readers to flip between pages. Each page has its own **title**, **date** (top right), **paragraphs**, and **closing** (in that order). The page dropdown appears only when there are 2 or more pages.
+
+```json
+{
+  "key": "love_letter_content",
   "pages": [
     {
+      "page": 1,
+      "title": "My Dearest Love,",
+      "date": "May 20, 2026",
       "paragraphs": [
         "First page paragraph 1...",
         "First page paragraph 2..."
-      ]
+      ],
+      "closing": "Yours always,\nYour Name"
     },
     {
+      "page": 2,
+      "title": "To My Sweetheart,",
+      "date": "June 14, 2026",
       "paragraphs": [
         "Second page paragraph 1...",
         "Second page paragraph 2..."
-      ]
+      ],
+      "closing": "Forever yours,\nYour Name"
     }
-  ],
-  "closing": "Yours always,\nYour Name"
+  ]
 }
 ```
 
@@ -105,6 +133,8 @@ If `/api/unlock` is blocked with auth page or 401 from Vercel:
 - Expect:
   - `POST /api/unlock` -> 200
   - `GET /api/letter` -> 200
+- After unlock, the letter displays in order: **title → paragraphs → closing**.
+- If you used a single `paragraphs` array, you should see one page with no page selector.
 
 ## Troubleshooting
 
@@ -112,3 +142,5 @@ If `/api/unlock` is blocked with auth page or 401 from Vercel:
 - `500 Missing env: MONGODB_URI` -> add `MONGODB_URI` and redeploy.
 - `401 Unauthorized` on `/api/letter` right after unlock -> check cookies not blocked and same domain request.
 - `Not Found` on root -> ensure `vercel.json` exists and project root is `.`.
+- Letter split into many pages unexpectedly -> use a flat `paragraphs` array for one page, or define explicit `pages` in MongoDB (paragraphs are never auto-split).
+- Title or closing missing -> ensure `title` and `closing` are top-level fields on the `love_letter_content` document, not inside `paragraphs`.

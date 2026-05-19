@@ -1,4 +1,5 @@
 const SESSION_KEY = "love_letter_unlocked";
+const PARAGRAPHS_PER_PAGE = 2;
 
 const gate = document.querySelector("#gate");
 const form = document.querySelector("#gate-form");
@@ -8,28 +9,93 @@ const letter = document.querySelector("#letter");
 const letterTitle = document.querySelector("#letter-title");
 const letterBody = document.querySelector("#letter-body");
 const closingEl = document.querySelector("#letter-closing");
+const paginationEl = document.querySelector("#letter-pagination");
+const pageSelect = document.querySelector("#page-select");
+const pagePrev = document.querySelector("#page-prev");
+const pageNext = document.querySelector("#page-next");
+
+let letterData = null;
+let currentPage = 1;
+let totalPages = 1;
 
 function showLetter() {
   if (gate) gate.classList.add("hidden");
   if (letter) letter.classList.remove("hidden");
 }
 
+function chunkParagraphs(paragraphs, perPage) {
+  const pages = [];
+  for (let i = 0; i < paragraphs.length; i += perPage) {
+    pages.push(paragraphs.slice(i, i + perPage));
+  }
+  return pages.length ? pages : [[]];
+}
+
+function renderParagraphs(paragraphs) {
+  if (!letterBody) return;
+  letterBody.innerHTML = "";
+  paragraphs.forEach((paragraph) => {
+    const p = document.createElement("p");
+    p.textContent = paragraph;
+    letterBody.appendChild(p);
+  });
+}
+
+function updateClosingVisibility() {
+  if (!closingEl || !letterData) return;
+  const hasClosing = typeof letterData.closing === "string" && letterData.closing.trim();
+  if (!hasClosing) {
+    closingEl.classList.add("hidden");
+    return;
+  }
+  if (currentPage === totalPages) {
+    const [line1, line2 = ""] = letterData.closing.split("\n");
+    closingEl.innerHTML = `${line1}<br />${line2}`;
+    closingEl.classList.remove("hidden");
+  } else {
+    closingEl.classList.add("hidden");
+  }
+}
+
+function showPage(page) {
+  if (!letterData) return;
+  currentPage = Math.max(1, Math.min(page, totalPages));
+  const pages = chunkParagraphs(letterData.paragraphs, PARAGRAPHS_PER_PAGE);
+  renderParagraphs(pages[currentPage - 1]);
+  updateClosingVisibility();
+
+  if (pageSelect) pageSelect.value = String(currentPage);
+  if (pagePrev) pagePrev.disabled = currentPage === 1;
+  if (pageNext) pageNext.disabled = currentPage === totalPages;
+}
+
+function setupPagination(data) {
+  letterData = data;
+  const pages = chunkParagraphs(data.paragraphs, PARAGRAPHS_PER_PAGE);
+  totalPages = pages.length;
+  currentPage = 1;
+
+  if (pageSelect) {
+    pageSelect.innerHTML = "";
+    for (let i = 1; i <= totalPages; i += 1) {
+      const option = document.createElement("option");
+      option.value = String(i);
+      option.textContent = `Page ${i}`;
+      pageSelect.appendChild(option);
+    }
+  }
+
+  if (paginationEl) {
+    paginationEl.classList.toggle("hidden", totalPages <= 1);
+  }
+
+  showPage(1);
+}
+
 function renderLetter(data) {
   if (!data || !Array.isArray(data.paragraphs)) return;
   if (letterTitle && typeof data.title === "string") letterTitle.textContent = data.title;
-  if (letterBody) {
-    letterBody.innerHTML = "";
-    data.paragraphs.forEach((paragraph) => {
-      const p = document.createElement("p");
-      p.textContent = paragraph;
-      letterBody.appendChild(p);
-    });
-  }
-  if (closingEl && typeof data.closing === "string" && data.closing.trim()) {
-    const [line1, line2 = ""] = data.closing.split("\n");
-    closingEl.innerHTML = `${line1}<br />${line2}`;
-    closingEl.classList.remove("hidden");
-  }
+  setupPagination(data);
 }
 
 async function loadLetter() {
@@ -44,6 +110,24 @@ if (sessionStorage.getItem(SESSION_KEY) === "1") {
   loadLetter()
     .then(() => showLetter())
     .catch(() => sessionStorage.removeItem(SESSION_KEY));
+}
+
+if (pageSelect) {
+  pageSelect.addEventListener("change", () => {
+    showPage(Number(pageSelect.value));
+  });
+}
+
+if (pagePrev) {
+  pagePrev.addEventListener("click", () => {
+    showPage(currentPage - 1);
+  });
+}
+
+if (pageNext) {
+  pageNext.addEventListener("click", () => {
+    showPage(currentPage + 1);
+  });
 }
 
 if (form) {

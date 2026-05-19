@@ -130,6 +130,53 @@ p {
   margin-top: 22px;
 }
 
+.letter-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #f3c7d7;
+}
+
+.letter-pagination button {
+  border: 1px solid #dcb2c2;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  font: inherit;
+  font-size: 1.1rem;
+  color: #912b58;
+  background: #fff;
+  cursor: pointer;
+}
+
+.letter-pagination button:hover:not(:disabled) {
+  background: #fff0f5;
+}
+
+.letter-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-select-label {
+  font-weight: 700;
+  color: #912b58;
+}
+
+#page-select {
+  border: 1px solid #dcb2c2;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font: inherit;
+  color: #2f1b24;
+  background: #fff;
+  cursor: pointer;
+  min-width: 110px;
+}
+
 .flowers {
   position: absolute;
   inset: 0;

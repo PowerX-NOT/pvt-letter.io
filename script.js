@@ -65,6 +65,33 @@ function renderDate(date) {
   }
 }
 
+function parseLetterDate(value) {
+  if (typeof value !== "string" || !value.trim()) return null;
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+function getLatestPageNumber(pages) {
+  if (!pages.length) return 1;
+  let latestIndex = pages.length - 1;
+
+  for (let i = 0; i < pages.length; i += 1) {
+    const candidateDate = parseLetterDate(pages[i].date);
+    const latestDate = parseLetterDate(pages[latestIndex].date);
+    const candidatePage = typeof pages[i].page === "number" ? pages[i].page : i + 1;
+    const latestPage =
+      typeof pages[latestIndex].page === "number" ? pages[latestIndex].page : latestIndex + 1;
+
+    if (candidateDate !== null && (latestDate === null || candidateDate > latestDate)) {
+      latestIndex = i;
+    } else if (candidateDate === null && latestDate === null && candidatePage > latestPage) {
+      latestIndex = i;
+    }
+  }
+
+  return latestIndex + 1;
+}
+
 function showPage(page) {
   if (!letterData || !Array.isArray(letterData.pages)) return;
   currentPage = Math.max(1, Math.min(page, totalPages));
@@ -82,7 +109,6 @@ function showPage(page) {
 function setupPagination(data) {
   letterData = data;
   totalPages = Array.isArray(data.pages) ? data.pages.length : 1;
-  currentPage = 1;
 
   if (pageSelect) {
     pageSelect.innerHTML = "";
@@ -98,7 +124,7 @@ function setupPagination(data) {
     paginationEl.classList.toggle("hidden", totalPages <= 1);
   }
 
-  showPage(1);
+  showPage(getLatestPageNumber(data.pages));
 }
 
 function renderLetter(data) {
